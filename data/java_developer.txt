@@ -1,0 +1,13 @@
+We are looking for a skilled Java Developer to join our dynamic team. The ideal candidate has experience in building high-performing, scalable, enterprise-grade applications. You will be responsible for designing and developing Java-based applications, contributing to all phases of the development lifecycle, and collaborating with cross-functional teams to deliver high-quality solutions.
+
+Key Responsibilities
+
+Develop, maintain and support custom-built software application
+Preparation of technical documentation on Jira and Confluence
+Perform unit testing on software deliverables and provide the relevant assistance during product test, integration test and user acceptance test
+Provide post-implementation support and carry out investigation and troubleshooting when necessary
+Development experience in enterprise software development on Java Spring Boot and associated technologies JPA and Hibernate
+Familiar with relational database concepts and SQL experience preferably on MS SQL
+Experience using Git and have a good understanding of Git workflow
+Experience working in agile scrum teams and productivity tools like Jira and Confluence
+Exposure to Jenkins and Kubernetes is a bonus
