@@ -290,5 +290,3 @@ python scripts/complete_setup.py
 For issues and questions, please create an issue in the repository or contact the development team.
 
 ---
-
-**Built with ❤️ for career success and powered by cutting-edge AI technology.**
