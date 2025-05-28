@@ -1,4 +1,3 @@
-# /Users/vishalmishra/MyDocuments/SMU_MITB/Term-3/Gen_AI_with_LLM/Project/Smart_ATS_With_RAG/rag/llm_service.py
 import os
 from langchain_openai import ChatOpenAI
 from langchain_groq import ChatGroq

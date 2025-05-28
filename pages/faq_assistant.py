@@ -1,4 +1,3 @@
-# /Users/vishalmishra/MyDocuments/SMU_MITB/Term-3/Gen_AI_with_LLM/Project/Smart_ATS_With_RAG/pages/faq_assistant.py
 import os
 import streamlit as st
 import sys

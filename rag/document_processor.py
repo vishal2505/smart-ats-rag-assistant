@@ -1,4 +1,3 @@
-# /Users/vishalmishra/MyDocuments/SMU_MITB/Term-3/Gen_AI_with_LLM/Project/Smart_ATS_With_RAG/rag/document_processor.py
 import pandas as pd
 import os
 from langchain.text_splitter import RecursiveCharacterTextSplitter

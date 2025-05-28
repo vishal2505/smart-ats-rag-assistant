@@ -1,4 +1,3 @@
-# /Users/vishalmishra/MyDocuments/SMU_MITB/Term-3/Gen_AI_with_LLM/Project/Smart_ATS_With_RAG/rag/rag_qa_chain.py
 import warnings
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate

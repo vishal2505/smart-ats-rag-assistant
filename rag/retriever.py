@@ -1,4 +1,3 @@
-# /Users/vishalmishra/MyDocuments/SMU_MITB/Term-3/Gen_AI_with_LLM/Project/Smart_ATS_With_RAG/rag/retriever.py
 from langchain_core.prompts import PromptTemplate
 
 try:
