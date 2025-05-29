@@ -49,6 +49,7 @@ def get_or_create_vector_store(embedding_function, index_name=None):
         print(f"Index '{index_name}' is ready!")
     # Remove the "already exists" message to reduce noise
     
+    print(f"Using existing index '{index_name}'")
     # Get the vector store
     vector_store = PineconeVectorStore(
         index_name=index_name,

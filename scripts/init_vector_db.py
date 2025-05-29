@@ -63,7 +63,7 @@ if __name__ == "__main__":
     print(f"Data path: {data_path}")
     
     try:
-        vector_store = init_vector_database(data_path, recreate=True)
+        vector_store = init_vector_database(data_path, recreate=False)
         print("🎉 Vector database initialization completed successfully!")
     except Exception as e:
         print(f"❌ Error during initialization: {str(e)}")
