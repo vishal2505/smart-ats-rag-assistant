@@ -29,10 +29,11 @@ plotly = "*"
 PyPDF2 = "*"
 groq = "*"
 kaggle = "*"
-openpyxl = "*"
 scikit-learn = "*"
 sentence-transformers = "*"
 pydantic = "*"
+numpy = "<2.0"
+torch = "*"
 
 [dev-packages]
 

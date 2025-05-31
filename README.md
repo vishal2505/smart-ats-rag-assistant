@@ -1,6 +1,6 @@
 # Smart ATS Resume Analyzer with RAG-based FAQ Assistant
 
-A comprehensive AI-powered career guidance platform that combines ATS resume analysis with an intelligent FAQ assistant powered by Retrieval-Augmented Generation (RAG) technology.
+A comprehensive AI-powered career guidance platform that combines ATS resume analysis, psychometric testing, resume ranking, and an intelligent FAQ assistant powered by Retrieval-Augmented Generation (RAG) technology.
 
 ![Python](https://img.shields.io/badge/python-v3.8+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/streamlit-v1.28+-red.svg)
@@ -17,6 +17,22 @@ A comprehensive AI-powered career guidance platform that combines ATS resume ana
 - **Cover Letter Generation**: Create tailored cover letters for job applications
 - **Resume Updates**: Generate improved versions of your resume
 
+### MCQ Generator - Psychometric Test
+- **AI-Powered Question Generation**: Create customized multiple-choice questions for job roles
+- **Role-Specific Assessment**: Generate questions tailored to specific job positions and skills
+- **Configurable Difficulty**: Adjust question complexity and focus areas
+- **Automated Scoring**: Real-time evaluation with detailed explanations
+- **Export Functionality**: Download test results and analysis reports
+- **Multiple Choice Formats**: Support for various question types and formats
+
+### Resume Ranking System
+- **Multi-Algorithm Ranking**: Compare resumes using TF-IDF, Sentence Transformers, and LLM-based scoring
+- **Bulk Resume Processing**: Upload and analyze multiple resumes simultaneously
+- **Semantic Similarity**: Advanced embedding-based resume-job description matching
+- **AI-Powered Evaluation**: LLM-driven scoring with detailed explanations
+- **Comparative Analysis**: Side-by-side resume comparison and ranking
+- **Export Results**: Download ranking reports for hiring decisions
+
 ### RAG-powered FAQ Assistant
 - **Intelligent Career Guidance**: Get expert advice on resumes, interviews, and job searching
 - **Job Market Insights**: Access information from 60,000+ job descriptions
@@ -30,18 +46,23 @@ A comprehensive AI-powered career guidance platform that combines ATS resume ana
 - **Frontend**: Streamlit (Multi-page application)
 - **Backend**: Python with Langchain framework
 - **Vector Database**: Pinecone for semantic search
-- **LLM Providers**: OpenAI GPT, Groq (Llama, Mixtral)
-- **Embeddings**: OpenAI text-embedding-ada-002
+- **LLM Providers**: OpenAI GPT, Groq (Llama, Mixtral, DeepSeek)
+- **Embeddings**: OpenAI text-embedding-ada-002, Sentence Transformers
+- **ML Libraries**: Scikit-learn (TF-IDF, Cosine Similarity), Sentence Transformers
+- **Document Processing**: PyPDF2, Advanced chunking and metadata extraction
 - **Data Source**: Kaggle job descriptions dataset (60,000+ entries)
-- **Document Processing**: Advanced chunking and metadata extraction
+- **Testing Framework**: Custom psychometric assessment engine
 
 ## 📁 Project Structure
 
 ```
 smart-ats-rag-assistant/
 ├── app.py                    # Main Streamlit application
+├── mcq_utils.py             # MCQ generation utilities
 ├── pages/
-│   └── faq_assistant.py     # RAG-powered FAQ assistant
+│   ├── faq_assistant.py     # RAG-powered FAQ assistant
+│   ├── mcq_app.py           # Psychometric test generator
+│   └── resume_ranking_app.py # Resume ranking system
 ├── rag/                     # RAG system components
 │   ├── embeddings.py        # Embedding functions
 │   ├── vector_store.py      # Pinecone operations
@@ -87,10 +108,27 @@ cd Smart_ATS_With_RAG
 ```
 
 ### 2. Install Dependencies
+The project includes all necessary dependencies for:
+- Resume analysis and ranking
+- MCQ generation and testing
+- RAG-powered FAQ system
+- Machine learning algorithms
+
 ```bash
 pipenv install
 pipenv shell
 ```
+
+Key dependencies include:
+- `streamlit` - Web application framework
+- `langchain` - LLM application framework
+- `pinecone-client` - Vector database
+- `openai` - OpenAI API integration
+- `groq` - Groq API integration
+- `scikit-learn` - Machine learning algorithms
+- `sentence-transformers` - Semantic embeddings
+- `PyPDF2` - PDF processing
+- `pandas` - Data manipulation
 
 ### 3. Environment Configuration
 Copy the example environment file and add your API keys:
@@ -168,6 +206,30 @@ streamlit run app.py
 5. Click "Analyze Resume" to get detailed feedback
 6. Use additional features like cover letter generation
 
+### MCQ Generator - Psychometric Test (For Recruiters)
+1. Navigate to the "MCQ Generator" page
+2. Select your preferred AI model from the sidebar
+3. Enter the job title and job description
+4. Configure test parameters:
+   - Number of questions (5-20)
+   - Question types (Technical, Behavioral, Situational)
+   - Difficulty level (Easy, Medium, Hard)
+5. Click "Generate MCQ Test" to create customized questions
+6. Review questions and modify if needed
+7. Take the test or export for candidate assessment
+8. View detailed results with explanations and scoring
+
+### Resume Ranking System (For Hiring Companies)
+1. Navigate to the "Resume Ranking" page
+2. Enter the job description in the text area
+3. Upload multiple resume files (PDF format)
+4. Choose ranking method from three tabs:
+   - **TF-IDF**: Traditional keyword-based ranking
+   - **Sentence Transformers**: Semantic similarity ranking
+   - **LLM-Based**: AI-powered evaluation with explanations
+5. View ranked results with scores and detailed analysis
+6. Export rankings for hiring decisions
+
 ### FAQ Assistant
 1. Navigate to the "FAQ Assistant" page
 2. Configure your AI model and retrieval settings in the sidebar
@@ -213,18 +275,31 @@ streamlit run app.py
 
 ### Multi-Provider LLM Support
 - **OpenAI**: GPT-3.5-turbo, GPT-4, GPT-4o
-- **Groq**: Llama-3.1, Mixtral-8x7B (high-speed inference)
+- **Groq**: Llama-3.1, Mixtral-8x7B, DeepSeek R1 (high-speed inference)
 
 ### Intelligent Retrieval
 - **Query Classification**: Automatically detect question types
 - **Adaptive Search**: Adjust retrieval strategy per query
 - **Source Diversity**: Balance relevance with information variety
 
+### Advanced Ranking Algorithms
+- **TF-IDF Vectorization**: Traditional keyword-based similarity
+- **Sentence Transformers**: Semantic embedding-based matching
+- **LLM-Powered Evaluation**: AI-driven scoring with explanations
+- **Multi-Algorithm Comparison**: Side-by-side ranking results
+
+### Psychometric Testing Engine
+- **Dynamic Question Generation**: AI-powered MCQ creation
+- **Adaptive Difficulty**: Intelligent question complexity adjustment
+- **Multi-Domain Assessment**: Technical, behavioral, and situational testing
+- **Real-time Scoring**: Instant evaluation with detailed feedback
+
 ### User Experience
 - **Responsive Design**: Works on desktop and mobile
 - **Real-time Processing**: Stream responses as they generate
-- **Export Options**: Download generated content
+- **Export Options**: Download generated content and test results
 - **Session Persistence**: Remember conversation history
+- **Bulk Processing**: Handle multiple resumes simultaneously
 
 ## 🛡️ Error Handling & Monitoring
 
