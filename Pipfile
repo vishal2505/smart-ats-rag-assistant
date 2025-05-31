@@ -30,6 +30,9 @@ PyPDF2 = "*"
 groq = "*"
 kaggle = "*"
 openpyxl = "*"
+scikit-learn = "*"
+sentence-transformers = "*"
+pydantic = "*"
 
 [dev-packages]
 
