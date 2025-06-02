@@ -141,15 +141,15 @@ def generate_simple_response(query, llm):
         # Fallback response that adapts to the query
         query_lower = query.lower()
         if any(word in query_lower for word in ['hi', 'hello', 'hey', 'good']):
-            return "Hi there! 👋 I'm your AI career assistant. I can help you with resumes, interviews, job search strategies, and career development. What would you like to know about?"
+            return "Hi there! I'm your AI career assistant. I can help you with resumes, interviews, job search strategies, and career development. What would you like to know about?"
         elif any(word in query_lower for word in ['thank', 'thanks']):
-            return "You're welcome! 😊 Feel free to ask me anything else about your career or job search."
+            return "You're welcome! Feel free to ask me anything else about your career or job search."
         elif any(word in query_lower for word in ['bye', 'goodbye', 'see you']):
-            return "Goodbye! 👋 Best of luck with your career journey. Feel free to come back anytime!"
+            return "Goodbye! Best of luck with your career journey. Feel free to come back anytime!"
         elif any(word in query_lower for word in ['help', 'what', 'can', 'do']):
-            return "I'm here to help with your career! 🚀 I can assist with resume optimization, interview prep, job search strategies, salary negotiation, and career development. What specific topic interests you?"
+            return "I'm here to help with your career! I can assist with resume optimization, interview prep, job search strategies, salary negotiation, and career development. What specific topic interests you?"
         else:
-            return "I'm specialized in career guidance! 😊 I can help you with resumes, interviews, job searching, and career development. What career topic would you like to explore?"
+            return "I'm specialized in career guidance! I can help you with resumes, interviews, job searching, and career development. What career topic would you like to explore?"
 
 def get_suggested_questions():
     """Return a list of suggested questions for users"""
