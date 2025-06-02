@@ -23,8 +23,67 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-def classify_query_type(query):
-    """Classify the query type for contextual retrieval"""
+def classify_query_intent(query, llm):
+    """Use LLM to intelligently classify if query needs RAG retrieval or simple response"""
+    intent_prompt = f"""
+    You are an intelligent query classifier for a career assistant. Analyze the user input and determine if it requires:
+
+    1. RAG_RETRIEVAL - Questions that need specific information from documents about careers, jobs, industries, skills, etc.
+       Examples: "How do I optimize my resume?", "What skills are needed for data science?", "How to prepare for interviews?"
+    
+    2. SIMPLE_RESPONSE - Greetings, thanks, casual conversation, or questions that can be answered without document retrieval.
+       Examples: "Hi", "Hello", "Thank you", "How are you?", "What can you help with?"
+
+    User input: "{query}"
+    
+    Think about whether this query would benefit from searching through job descriptions, career guides, and professional documents.
+    
+    Respond with only: RAG_RETRIEVAL or SIMPLE_RESPONSE
+    """
+    
+    try:
+        # Use the LLM to classify intent
+        if hasattr(llm, 'invoke'):
+            response = llm.invoke(intent_prompt)
+        else:
+            response = llm(intent_prompt)
+        
+        # Extract the intent from response - handle response objects properly
+        if hasattr(response, 'content'):
+            intent = response.content.strip().upper()
+        elif isinstance(response, str):
+            intent = response.strip().upper()
+        else:
+            intent = str(response).strip().upper()
+        
+        # Validate the intent
+        if 'RAG_RETRIEVAL' in intent:
+            return 'RAG_RETRIEVAL'
+        elif 'SIMPLE_RESPONSE' in intent:
+            return 'SIMPLE_RESPONSE'
+        else:
+            # Default to RAG_RETRIEVAL for ambiguous cases
+            return 'RAG_RETRIEVAL'
+            
+    except Exception as e:
+        # Fallback: use simple heuristics
+        query_lower = query.lower().strip()
+        
+        # Simple greetings and short phrases - likely don't need RAG
+        if (len(query.split()) <= 3 and 
+            any(word in query_lower for word in ['hi', 'hello', 'hey', 'thanks', 'thank you', 'bye', 'goodbye'])):
+            return 'SIMPLE_RESPONSE'
+        
+        # Career-related keywords - likely need RAG
+        career_keywords = ['resume', 'cv', 'job', 'career', 'interview', 'salary', 'skill', 'industry', 'position', 'application']
+        if any(keyword in query_lower for keyword in career_keywords):
+            return 'RAG_RETRIEVAL'
+        
+        # Default to RAG for longer queries
+        return 'RAG_RETRIEVAL' if len(query.split()) > 3 else 'SIMPLE_RESPONSE'
+
+def classify_career_query_type(query):
+    """Classify the career query type for contextual retrieval"""
     query_lower = query.lower()
     
     if any(word in query_lower for word in ['resume', 'cv', 'application', 'portfolio']):
@@ -35,6 +94,62 @@ def classify_query_type(query):
         return "salary"
     else:
         return "general"
+
+def generate_simple_response(query, llm):
+    """Generate appropriate responses for non-career queries using LLM"""
+    
+    response_prompt = f"""
+    You are a helpful AI career assistant. The user has said: "{query}"
+    
+    This appears to be a simple greeting, casual conversation, or general question that doesn't require searching through career documents.
+    
+    Respond appropriately:
+    - If it's a greeting: Welcome them warmly and briefly introduce your career guidance capabilities
+    - If it's thanks: Acknowledge their gratitude and offer continued help
+    - If it's goodbye: Wish them well in their career journey
+    - If it's casual conversation: Politely redirect to career topics while being friendly
+    - If it's asking what you can help with: List your main capabilities
+    
+    Keep your response:
+    - Friendly and professional
+    - Concise (2-3 sentences max)
+    - Focused on career guidance topics
+    - Use appropriate emojis
+    
+    Mention that you can specifically help with:
+    - Resume optimization and ATS systems
+    - Interview preparation
+    - Job search strategies
+    - Salary negotiation
+    - Career development
+    """
+    
+    try:
+        if hasattr(llm, 'invoke'):
+            response = llm.invoke(response_prompt)
+        else:
+            response = llm(response_prompt)
+        
+        # Extract content from response object
+        if hasattr(response, 'content'):
+            return response.content
+        elif isinstance(response, str):
+            return response
+        else:
+            return str(response)
+    except Exception as e:
+        # Fallback response that adapts to the query
+        query_lower = query.lower()
+        if any(word in query_lower for word in ['hi', 'hello', 'hey', 'good']):
+            return "Hi there! 👋 I'm your AI career assistant. I can help you with resumes, interviews, job search strategies, and career development. What would you like to know about?"
+        elif any(word in query_lower for word in ['thank', 'thanks']):
+            return "You're welcome! 😊 Feel free to ask me anything else about your career or job search."
+        elif any(word in query_lower for word in ['bye', 'goodbye', 'see you']):
+            return "Goodbye! 👋 Best of luck with your career journey. Feel free to come back anytime!"
+        elif any(word in query_lower for word in ['help', 'what', 'can', 'do']):
+            return "I'm here to help with your career! 🚀 I can assist with resume optimization, interview prep, job search strategies, salary negotiation, and career development. What specific topic interests you?"
+        else:
+            return "I'm specialized in career guidance! 😊 I can help you with resumes, interviews, job searching, and career development. What career topic would you like to explore?"
 
 def get_suggested_questions():
     """Return a list of suggested questions for users"""
@@ -54,37 +169,51 @@ def get_suggested_questions():
 def process_question(prompt, qa_chain, retrieval_strategy, vector_store, search_kwargs, enable_memory, llm):
     """Process a question and return the response"""
     try:
-        # Use contextual retriever if selected
-        if retrieval_strategy == "contextual":
-            query_type = classify_query_type(prompt)
-            contextual_retriever = get_contextual_retriever(vector_store, query_type, search_kwargs)
-            # Create a new chain with the contextual retriever
-            if enable_memory:
-                qa_chain = create_conversation_chain(llm, contextual_retriever)
-            else:
-                qa_chain = create_rag_chain(llm, contextual_retriever)
+        # First, classify the intent of the query
+        intent = classify_query_intent(prompt, llm)
         
-        # Prepare input based on chain type
-        if enable_memory and hasattr(qa_chain, 'memory'):
-            # For conversation chain with memory - check if it's ConversationalRetrievalChain
-            if hasattr(qa_chain, 'combine_docs_chain'):
-                response = qa_chain.invoke({"question": prompt, "chat_history": []})
-            else:
-                response = qa_chain.invoke({"question": prompt})
-        else:
-            # For regular RAG chain - use invoke instead of __call__
-            response = qa_chain.invoke({"query": prompt})
+        # Handle non-career queries without RAG
+        if intent == 'SIMPLE_RESPONSE':
+            response = generate_simple_response(prompt, llm)
+            return response, [], None
         
-        # Extract answer from response - handle different response formats
-        answer = None
-        if isinstance(response, dict):
-            answer = response.get("answer") or response.get("result", "I apologize, but I couldn't generate a response.")
-        else:
-            answer = str(response)
+        # For career questions, proceed with RAG pipeline
+        if intent == 'RAG_RETRIEVAL':
+            # Use contextual retriever if selected
+            if retrieval_strategy == "contextual":
+                query_type = classify_career_query_type(prompt)
+                contextual_retriever = get_contextual_retriever(vector_store, query_type, search_kwargs)
+                # Create a new chain with the contextual retriever
+                if enable_memory:
+                    qa_chain = create_conversation_chain(llm, contextual_retriever)
+                else:
+                    qa_chain = create_rag_chain(llm, contextual_retriever)
             
-        sources = response.get("source_documents", []) if isinstance(response, dict) else []
+            # Prepare input based on chain type
+            if enable_memory and hasattr(qa_chain, 'memory'):
+                # For conversation chain with memory - check if it's ConversationalRetrievalChain
+                if hasattr(qa_chain, 'combine_docs_chain'):
+                    response = qa_chain.invoke({"question": prompt, "chat_history": []})
+                else:
+                    response = qa_chain.invoke({"question": prompt})
+            else:
+                # For regular RAG chain - use invoke instead of __call__
+                response = qa_chain.invoke({"query": prompt})
+            
+            # Extract answer from response - handle different response formats
+            answer = None
+            if isinstance(response, dict):
+                answer = response.get("answer") or response.get("result", "I apologize, but I couldn't generate a response.")
+            else:
+                answer = str(response)
+                
+            sources = response.get("source_documents", []) if isinstance(response, dict) else []
+            
+            return answer, sources, None
         
-        return answer, sources, None
+        # Fallback for any unhandled cases
+        response = generate_simple_response(prompt, llm)
+        return response, [], None
         
     except Exception as e:
         error_msg = f"Sorry, I encountered an error: {str(e)}"
