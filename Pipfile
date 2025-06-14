@@ -34,6 +34,7 @@ sentence-transformers = "*"
 pydantic = "*"
 numpy = "<2.0"
 torch = "*"
+fpdf2 = "*"
 
 [dev-packages]
 
