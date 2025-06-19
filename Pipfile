@@ -34,6 +34,11 @@ sentence-transformers = "*"
 pydantic = "*"
 numpy = "<2.0"
 torch = "*"
+deepeval = "*"
+ragas = "*"
+datasets = "*"
+matplotlib = "*"
+seaborn = "*"
 
 [dev-packages]
 
