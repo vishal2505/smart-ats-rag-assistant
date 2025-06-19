@@ -39,6 +39,7 @@ ragas = "*"
 datasets = "*"
 matplotlib = "*"
 seaborn = "*"
+fpdf2 = "*"
 
 [dev-packages]
 
