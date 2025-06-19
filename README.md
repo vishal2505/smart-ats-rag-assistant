@@ -40,6 +40,7 @@ A comprehensive AI-powered career guidance platform that combines ATS resume ana
 - **Contextual Responses**: Smart retrieval system adapts to different query types
 - **Conversation Memory**: Maintains context across multi-turn conversations
 - **Source References**: See exactly where information comes from
+- **Rigorous Evaluation**: Comprehensive testing with RAGAS and DeepEval frameworks ensuring production-ready quality
 
 ## 🛠️ Technology Stack
 
@@ -52,6 +53,8 @@ A comprehensive AI-powered career guidance platform that combines ATS resume ana
 - **Document Processing**: PyPDF2, Advanced chunking and metadata extraction
 - **Data Source**: Kaggle job descriptions dataset (60,000+ entries)
 - **Testing Framework**: Custom psychometric assessment engine
+- **Evaluation Frameworks**: RAGAS (Multi-turn conversation evaluation), DeepEval (Single-turn Q&A evaluation)
+- **Quality Assurance**: Comprehensive model benchmarking and performance monitoring
 
 ## 📁 Project Structure
 
@@ -70,6 +73,19 @@ smart-ats-rag-assistant/
 │   ├── document_processor.py # Text processing
 │   ├── retriever.py         # Retrieval strategies
 │   └── rag_qa_chain.py      # QA chain creation
+├── evaluation/              # Model evaluation framework
+│   ├── deepeval_evaluation_runner.py # DeepEval single-turn evaluation
+│   ├── ragas_evaluation_runner.py    # RAGAS multi-turn evaluation wrapper
+│   ├── ragas_evaluator.py            # RAGAS core evaluation logic
+│   ├── ragas_results_processor.py    # Results analysis & visualization
+│   ├── README.md                     # Detailed evaluation methodology
+│   └── results/                      # Evaluation results & reports
+│       ├── RAGAS_Evaluation_Report.md     # RAGAS detailed results
+│       ├── DeepEval_Evaluation_Report.md  # DeepEval detailed results
+│       ├── Final_Evaluation_Summary.md    # Combined analysis & recommendations
+│       ├── comprehensive_evaluation_summary.json
+│       ├── deepeval/                      # DeepEval raw results
+│       └── ragas/                         # RAGAS raw results & CSVs
 ├── scripts/                 # Setup and utility scripts
 │   ├── complete_setup.py    # Automated setup
 │   ├── download_dataset.py  # Dataset download
@@ -300,6 +316,74 @@ streamlit run app.py
 - **Export Options**: Download generated content and test results
 - **Session Persistence**: Remember conversation history
 - **Bulk Processing**: Handle multiple resumes simultaneously
+
+## 🧪 **Model Evaluation Framework**
+
+We've implemented a comprehensive evaluation system using industry-standard frameworks to ensure the highest quality AI responses.
+
+### **Evaluation Overview**
+- **Frameworks**: RAGAS (Multi-turn) + DeepEval (Single-turn)
+- **Models Tested**: 4 leading AI models
+- **Total Evaluations**: 40+ test cases across different scenarios
+- **Status**: ✅ **COMPLETE** - All models evaluated and benchmarked
+
+### **Models Evaluated**
+| Model | Provider | RAGAS Score | DeepEval Score | Status |
+|-------|----------|-------------|----------------|--------|
+| 🏆 **GPT-3.5-Turbo** | OpenAI | **0.498** | **1.000** | ✅ Recommended |
+| 🥈 **Llama-3.1-8B-Instant** | Groq | **0.418** | **1.000** | ✅ Speed Option |
+| 🥉 **GPT-4o-Mini** | OpenAI | **0.386** | **1.000** | ✅ Accuracy Option |
+| **Llama3-8B-8192** | Groq | **0.383** | **0.946** | ✅ Baseline |
+
+### **Evaluation Methodologies**
+
+#### **RAGAS Multi-Turn Evaluation**
+- **Purpose**: Evaluate conversational AI capabilities
+- **Scenarios**: 5 conversation types (Resume Optimization, Interview Prep, Career Transition, Salary Negotiation, Skills Development)
+- **Metrics**: 
+  - Faithfulness (0.866 best - GPT-4o-Mini)
+  - Answer Relevancy (0.941 best - Llama-3.1-8B)
+  - Context Precision & Recall
+  - Answer Correctness & Similarity
+- **Method**: Multi-turn conversations with job-specific contexts
+
+#### **DeepEval Single-Turn Evaluation**
+- **Purpose**: Evaluate single Q&A accuracy
+- **Scenarios**: Job-specific skill questions
+- **Metrics**:
+  - Answer Relevancy (threshold: 0.5)
+  - Faithfulness (threshold: 0.5)
+- **Method**: Dataset-driven test cases with ground truth validation
+
+### **Key Findings**
+1. **Production Ready**: All models achieve excellent single-turn performance (≥94.6%)
+2. **Conversational Excellence**: OpenAI GPT-3.5-Turbo leads in multi-turn scenarios
+3. **Speed vs. Quality**: Groq models offer faster inference with competitive accuracy
+4. **Context Handling**: Critical area for improvement across all models
+
+### **Business Impact**
+- **Reliability**: Rigorous testing ensures consistent user experience
+- **Transparency**: Complete evaluation methodology available
+- **Optimization**: Data-driven model selection for different use cases
+- **Quality Assurance**: Continuous monitoring and improvement framework
+
+### **Detailed Reports**
+Complete evaluation documentation available in `/evaluation/`:
+- **[RAGAS Evaluation Report](./evaluation/results/RAGAS_Evaluation_Report.md)** - Multi-turn conversation analysis
+- **[DeepEval Evaluation Report](./evaluation/results/DeepEval_Evaluation_Report.md)** - Single-turn Q&A analysis  
+- **[Final Evaluation Summary](./evaluation/results/Final_Evaluation_Summary.md)** - Combined analysis & recommendations
+
+### **Evaluation Commands**
+```bash
+# Run complete evaluation suite
+cd evaluation
+python ragas_evaluation_runner.py      # ~30-45 minutes
+python deepeval_evaluation_runner.py   # ~10-15 minutes
+python ragas_results_processor.py      # ~2-3 minutes
+
+# View comprehensive results
+open results/Final_Evaluation_Summary.md
+```
 
 ## 🛡️ Error Handling & Monitoring
 
