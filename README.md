@@ -40,7 +40,7 @@ A comprehensive AI-powered career guidance platform that combines ATS resume ana
 - **Contextual Responses**: Smart retrieval system adapts to different query types
 - **Conversation Memory**: Maintains context across multi-turn conversations
 - **Source References**: See exactly where information comes from
-- **Rigorous Evaluation**: Comprehensive testing with RAGAS and DeepEval frameworks ensuring production-ready quality
+- **Evaluation**: FAQ Assistant evaluation with RAGAS and DeepEval frameworks
 
 ## 🛠️ Technology Stack
 
@@ -54,7 +54,6 @@ A comprehensive AI-powered career guidance platform that combines ATS resume ana
 - **Data Source**: Kaggle job descriptions dataset (60,000+ entries)
 - **Testing Framework**: Custom psychometric assessment engine
 - **Evaluation Frameworks**: RAGAS (Multi-turn conversation evaluation), DeepEval (Single-turn Q&A evaluation)
-- **Quality Assurance**: Comprehensive model benchmarking and performance monitoring
 
 ## 📁 Project Structure
 
@@ -324,8 +323,8 @@ We've implemented a comprehensive evaluation system using industry-standard fram
 ### **Evaluation Overview**
 - **Frameworks**: RAGAS (Multi-turn) + DeepEval (Single-turn)
 - **Models Tested**: 4 leading AI models
-- **Total Evaluations**: 40+ test cases across different scenarios
-- **Status**: ✅ **COMPLETE** - All models evaluated and benchmarked
+- **Total Evaluations**: test cases across different scenarios
+- **Status**: All models evaluated and benchmarked
 
 ### **Models Evaluated**
 | Model | Provider | RAGAS Score | DeepEval Score | Status |
